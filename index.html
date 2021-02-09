@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Asap:400,400i,600/Karla&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Vue JS</title>
+</head>
+<body>
+    <header class="header">
+        <div class="mainer mainer--header">
+            To Do list
+        </div>
+    </header>
+    <div class="mainer" id="app">
+        <div class="category-grid">
+            <div class="category-grid__cell" v-for="category in categories">
+                <div class="category-grid__caption">{{category.name}}</div>
+                <ul class="block-list" v-if="filteredList(category.name).length">
+                    <li class="block-list__item" v-for="(item, key) in filteredList(category.name)">
+
+                        <div class="block-list__item-head">
+                            <div class="block-list__item-checkbox-wrapper">
+                                <input class="block-list__item-checkbox" v-model="item.isDone" type="checkbox">
+                            </div>
+                            <div class="block-list__item-data">
+                                <span class="decoration" :class="{'line-thought' : item.isDone}">
+                                    {{item.name}}
+                                </span>
+                            </div>
+                            <div class="block-list__item-buttons">
+                                <button class="btn" title="Edit" @click="item.isEdit = !item.isEdit" :disabled="item.isDone">
+                                    <i class="fas fa-pencil-alt"></i></button>
+                                <button class="btn" title="Delete" @click="deleteItem(key)"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="block-list__item-edit" v-if="item.isEdit">
+                            <input type="text" v-model.lazy="item.name">
+
+
+
+                            <select class="block-list__item-edit-element" v-model="item.category">
+                                <option value="" disabled hidden>Select category</option>
+                                <option v-for="category in categories" v-bind:value="category.name">
+                                    {{category.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="category-grid__cell category-grid__cell--empty"></div>
+            <div class="category-grid__cell category-grid__cell--empty"></div>
+        </div>
+        
+
+        <div class="block-new">
+            <input class="block-new__element" type="text" v-model.trim="newItemName" placeholder="Enter new ToDo">
+            <select class="block-new__element" v-model="newItemCategory">
+                <option value="" disabled hidden>Select category</option>
+                <option v-for="category in categories" v-bind:value="category.name">
+                    {{category.name}}
+                </option>
+            </select>
+            <button class="btn block-new__element" @click="addItem()" :disabled="!(newItemName && newItemCategory)">
+                <i class="fas fa-plus"></i>Add ToDo
+            </button>
+        </div>
+
+        <div class="block-new">
+            <input class="block-new__element" type="text" v-model.trim="newCategoryName" placeholder="Enter new category">
+
+            <button class="btn block-new__element" @click="addCategory()" :disabled="!(newCategoryName && newCategoryName)">
+                <i class="fas fa-plus"></i>Add
+            </button>
+        </div>
+      </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
+<!-- 
+:class="style"
+v-on:input="style = $event.target.value" -->
